@@ -49,10 +49,10 @@ public class User {
     @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
+    @Column(name = "is_guest", columnDefinition = "TINYINT(1)", nullable = false)
     private boolean isGuest = false;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 
     /**

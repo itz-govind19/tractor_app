@@ -25,6 +25,6 @@ public class VehicleDetail {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 }

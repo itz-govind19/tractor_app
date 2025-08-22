@@ -69,8 +69,8 @@
             <column name="phone" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_guest" type="BOOLEAN" defaultValueBoolean="false"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_guest" type="BIT" defaultValueBoolean="false"/>
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <!-- Removed role_id column as it conflicts with user_roles many-to-many relationship -->
@@ -144,7 +144,7 @@
             <column name="vehicle_number" type="VARCHAR(20)"/>
             <column name="model" type="VARCHAR(100)"/>
             <column name="owner_id" type="BIGINT UNSIGNED"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -180,7 +180,7 @@
             </column>
             <column name="service_name" type="VARCHAR(100)"/>
             <column name="description" type="CLOB"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -259,7 +259,7 @@
             <column name="farmer_name" type="VARCHAR(100)"/>
             <column name="farmer_phone" type="VARCHAR(20)"/>
             <column name="status" type="VARCHAR(20)" defaultValue="Pending"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -307,9 +307,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="position_no" type="INT"/>
-            <column name="adjusted" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="adjusted" type="BIT" defaultValueBoolean="false"/>
             <column name="scheduled_date" type="TIMESTAMP"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -346,7 +346,7 @@
             <column name="amount" type="DECIMAL(10,2)"/>
             <column name="status" type="VARCHAR(20)" defaultValue="Pending"/>
             <column name="mode" type="VARCHAR(20)" defaultValue="CASH"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -383,7 +383,7 @@
             <column name="actual_paid_amount" type="DECIMAL(10,2)"/>
             <column name="remarks" type="CLOB"/>
             <column name="settlement_date" type="TIMESTAMP"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -420,7 +420,7 @@
             <column name="description" type="VARCHAR(255)"/>
             <column name="amount" type="DECIMAL(10,2)"/>
             <column name="expense_date" type="TIMESTAMP"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -458,7 +458,7 @@
             <column name="type" type="VARCHAR(20)"/>
             <column name="message" type="CLOB"/>
             <column name="status" type="VARCHAR(20)" defaultValue="Sent"/>
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>

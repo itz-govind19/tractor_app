@@ -2,6 +2,7 @@ package admin.myapp.com.authservice.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,7 +13,8 @@ public class Expenses {
     private Long expenseId;
 
     private String description;
-    private Double amount;
+    @Column(nullable = false)
+    private BigDecimal amount;
     private LocalDateTime expenseDate;
 
     @ManyToOne

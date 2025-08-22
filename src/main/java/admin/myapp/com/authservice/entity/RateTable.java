@@ -3,6 +3,8 @@ package admin.myapp.com.authservice.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "rate_table")
 public class RateTable {
@@ -12,7 +14,7 @@ public class RateTable {
 
     private String unitType;
 
-    private Double rateAmount;
+    private BigDecimal rateAmount;
 
     @ManyToOne
     @JoinColumn(name = "service_id")

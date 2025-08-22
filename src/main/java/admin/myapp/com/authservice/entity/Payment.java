@@ -2,6 +2,8 @@ package admin.myapp.com.authservice.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "payment")
 public class Payment {
@@ -9,7 +11,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
 
-    private Double amount;
+    private BigDecimal amount;
     private String status;
     private String mode;
 
@@ -17,6 +19,6 @@ public class Payment {
     @JoinColumn(name = "booking_id")
     private Booking booking;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 }

@@ -2,6 +2,7 @@ package admin.myapp.com.authservice.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,7 +12,7 @@ public class PaymentSettlement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long settlementId;
 
-    private Double actualPaidAmount;
+    private BigDecimal actualPaidAmount;
     private String remarks;
     private LocalDateTime settlementDate;
 
@@ -19,6 +20,6 @@ public class PaymentSettlement {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 }

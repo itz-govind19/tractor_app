@@ -21,6 +21,6 @@ public class Notification {
     @JoinColumn(name = "booking_id", nullable = true)
     private Booking booking;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 }

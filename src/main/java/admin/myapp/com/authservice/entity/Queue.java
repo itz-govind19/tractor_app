@@ -12,10 +12,11 @@ public class Queue {
     private Long queueId;
 
     private Integer positionNo;
+    @Column(name = "adjusted", columnDefinition = "TINYINT(1)")
     private boolean adjusted;
     private LocalDateTime scheduledDate;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 
     @OneToOne

@@ -19,6 +19,6 @@ public class Service {
     @JoinColumn(name = "vehicle_id")
     private VehicleDetail vehicle;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 }
