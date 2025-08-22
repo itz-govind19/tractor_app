@@ -69,7 +69,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         Set<Role> roles = request.getRoles().stream()
-                .map(roleName -> roleRepository.findById(roleName)
+                .map(roleName -> roleRepository.findByRoleName(roleName)
                         .orElseThrow(() -> new InvalidUserException("Role not found: " + roleName)))
                 .collect(Collectors.toSet());
 
