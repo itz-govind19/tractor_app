@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <!-- This is a global comment. It provides context or additional information for the entire changelog. -->
+    <!-- Example: This changelog contains table creation scripts for the rate packages and group management system. -->
+    <!--
+        This changeset follows the format:
+        <UserID><Date (DDMMYYYY)>-<UserSpecificCount>-<TotalChangesetCount>
+        Example: HR30072025-01-0001
+    -->
+
+    <changeSet id="GS_22082025-001-0001" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="role"/>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM role WHERE name = 'ADMIN'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="role">
+            <column name="name" value="ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="GS_22082025-002-0002" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="role"/>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM role WHERE name = 'USER'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="role">
+            <column name="name" value="USER"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
