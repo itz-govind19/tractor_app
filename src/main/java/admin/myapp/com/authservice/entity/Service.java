@@ -18,4 +18,7 @@ public class Service {
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
     private VehicleDetail vehicle;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 }

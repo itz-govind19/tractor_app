@@ -5,9 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +15,8 @@ import java.util.Set;
  * Supports registered users and guest users with multiple roles.
  */
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -51,6 +51,9 @@ public class User {
 
     @Column(nullable = false)
     private boolean isGuest = false;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 
     /**
      * Many-to-many role mapping for TractorService app

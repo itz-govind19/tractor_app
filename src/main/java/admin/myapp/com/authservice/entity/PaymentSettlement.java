@@ -18,4 +18,7 @@ public class PaymentSettlement {
     @ManyToOne
     @JoinColumn(name = "payment_id")
     private Payment payment;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 }

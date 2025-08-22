@@ -20,4 +20,7 @@ public class Notification {
     @ManyToOne
     @JoinColumn(name = "booking_id", nullable = true)
     private Booking booking;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 }

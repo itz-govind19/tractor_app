@@ -24,4 +24,7 @@ public class VehicleDetail {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 }

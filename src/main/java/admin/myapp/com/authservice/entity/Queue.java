@@ -5,20 +5,20 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "expenses")
-public class Expenses {
+@Table(name = "queue")
+public class Queue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long expenseId;
+    private Long queueId;
 
-    private String description;
-    private Double amount;
-    private LocalDateTime expenseDate;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    private Integer positionNo;
+    private boolean adjusted;
+    private LocalDateTime scheduledDate;
 
     @Column(nullable = false)
     private boolean isDeleted = false;
+
+    @OneToOne
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 }
