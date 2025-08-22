@@ -6,6 +6,10 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <!-- Global preconditions to ensure database compatibility -->
+    <preConditions onFail="HALT">
+        <dbms type="mysql,postgresql,oracle,h2"/>
+    </preConditions>
 
     <!-- This is a global comment. It provides context or additional information for the entire changelog. -->
     <!-- Example: This changelog contains table creation scripts for the rate packages and group management system. -->
@@ -22,25 +26,37 @@
                 <tableExists tableName="role"/>
             </not>
         </preConditions>
+
         <createTable tableName="role">
-            <column name="name" type="VARCHAR(50)">
-                <constraints primaryKey="true" nullable="false"/>
+            <column name="role_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="role"/>
+        </rollback>
     </changeSet>
 
-    <!-- ✅ Create 'users' table -->
+    <!-- ✅ Create 'user' table -->
     <changeSet id="GS_22082025-002-0002" author="GOVIND SIRSATH">
         <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="users"/>
-            </not>
+            <and>
+                <tableExists tableName="role"/>
+                <not>
+                    <tableExists tableName="user"/>
+                </not>
+            </and>
         </preConditions>
-        <createTable tableName="users">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+
+        <createTable tableName="user">
+            <column name="user_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="VARCHAR(255)">
+            <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(50)">
@@ -49,54 +65,393 @@
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="VARCHAR(255)">
+            <column name="email" type="VARCHAR(100)"/>
+            <column name="phone" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="mobile" type="VARCHAR(15)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="is_guest" type="BOOLEAN" defaultValueBoolean="false"/>
+            <!-- Removed role_id column as it conflicts with user_roles many-to-many relationship -->
         </createTable>
+
+        <rollback>
+            <dropTable tableName="user"/>
+        </rollback>
     </changeSet>
 
-    <!-- ✅ Create 'user_roles' join table -->
+    <!-- ✅ Create user_roles junction table -->
     <changeSet id="GS_22082025-003-0003" author="GOVIND SIRSATH">
         <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="user_roles"/>
-            </not>
+            <and>
+                <tableExists tableName="user"/>
+                <tableExists tableName="role"/>
+                <not>
+                    <tableExists tableName="user_roles"/>
+                </not>
+            </and>
         </preConditions>
+
         <createTable tableName="user_roles">
-            <column name="user_id" type="BIGINT">
+            <column name="user_id" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
-            <column name="role_name" type="VARCHAR(50)">
+            <column name="role_id" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <!-- Foreign keys -->
+        <addForeignKeyConstraint baseTableName="user_roles"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_user_roles_user"/>
+
+        <addForeignKeyConstraint baseTableName="user_roles"
+                                 baseColumnNames="role_id"
+                                 referencedTableName="role"
+                                 referencedColumnNames="role_id"
+                                 constraintName="fk_user_roles_role"/>
+
+        <!-- Composite primary key to prevent duplicate role assignments -->
+        <addPrimaryKey tableName="user_roles"
+                       columnNames="user_id, role_id"
+                       constraintName="pk_user_roles"/>
+
+        <rollback>
+            <dropTable tableName="user_roles"/>
+        </rollback>
     </changeSet>
 
-    <!-- ✅ Add foreign key constraints -->
+    <!-- ✅ Create 'vehicle_detail' table (based on VehicleDetail entity) -->
     <changeSet id="GS_22082025-004-0004" author="GOVIND SIRSATH">
         <preConditions onFail="MARK_RAN">
-            <not>
-                <foreignKeyConstraintExists foreignKeyName="fk_user_roles_user"/>
-            </not>
+            <and>
+                <tableExists tableName="user"/>
+                <not>
+                    <tableExists tableName="vehicle_detail"/>
+                </not>
+            </and>
         </preConditions>
-        <addForeignKeyConstraint
-                baseTableName="user_roles"
-                baseColumnNames="user_id"
-                constraintName="fk_user_roles_user"
-                referencedTableName="users"
-                referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint
-                baseTableName="user_roles"
-                baseColumnNames="role_name"
-                constraintName="fk_user_roles_role"
-                referencedTableName="role"
-                referencedColumnNames="name"/>
+        <createTable tableName="vehicle_detail">
+            <column name="vehicle_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="vehicle_type" type="VARCHAR(50)"/>
+            <column name="vehicle_number" type="VARCHAR(20)"/>
+            <column name="model" type="VARCHAR(100)"/>
+            <column name="owner_id" type="BIGINT UNSIGNED"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="vehicle_detail"
+                                 baseColumnNames="owner_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_vehicle_detail_owner"/>
+
+        <rollback>
+            <dropTable tableName="vehicle_detail"/>
+        </rollback>
     </changeSet>
 
+    <!-- ✅ Create 'service' table -->
+    <changeSet id="GS_22082025-005-0005" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="vehicle_detail"/>
+                <not>
+                    <tableExists tableName="service"/>
+                </not>
+            </and>
+        </preConditions>
 
+        <createTable tableName="service">
+            <column name="service_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="vehicle_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_name" type="VARCHAR(100)"/>
+            <column name="description" type="CLOB"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="service"
+                                 baseColumnNames="vehicle_id"
+                                 referencedTableName="vehicle_detail"
+                                 referencedColumnNames="vehicle_id"
+                                 constraintName="fk_service_vehicle"/>
+
+        <rollback>
+            <dropTable tableName="service"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ✅ Create rate_table -->
+    <changeSet id="GS_22082025-006-0006" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="service"/>
+                <not>
+                    <tableExists tableName="rate_table"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="rate_table">
+            <column name="rate_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="service_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit_type" type="VARCHAR(50)"/>
+            <column name="rate_amount" type="DECIMAL(10,2)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="rate_table"
+                                 baseColumnNames="service_id"
+                                 referencedTableName="service"
+                                 referencedColumnNames="service_id"
+                                 constraintName="fk_rate_service"/>
+
+        <rollback>
+            <dropTable tableName="rate_table"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ✅ Create booking table -->
+    <changeSet id="GS_22082025-007-0007" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="user"/>
+                <tableExists tableName="service"/>
+                <tableExists tableName="vehicle_detail"/>
+                <not>
+                    <tableExists tableName="booking"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="booking">
+            <column name="booking_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="farmer_id" type="BIGINT UNSIGNED"/>
+            <column name="service_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expected_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="farmer_name" type="VARCHAR(100)"/>
+            <column name="farmer_phone" type="VARCHAR(20)"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="Pending"/>
+        </createTable>
+
+        <!-- Add all foreign keys in the same changeset -->
+        <addForeignKeyConstraint baseTableName="booking"
+                                 baseColumnNames="farmer_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_booking_farmer"/>
+
+        <addForeignKeyConstraint baseTableName="booking"
+                                 baseColumnNames="service_id"
+                                 referencedTableName="service"
+                                 referencedColumnNames="service_id"
+                                 constraintName="fk_booking_service"/>
+
+        <addForeignKeyConstraint baseTableName="booking"
+                                 baseColumnNames="vehicle_id"
+                                 referencedTableName="vehicle_detail"
+                                 referencedColumnNames="vehicle_id"
+                                 constraintName="fk_booking_vehicle"/>
+
+        <rollback>
+            <dropTable tableName="booking"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ✅ Create queue table -->
+    <changeSet id="GS_22082025-008-0008" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="booking"/>
+                <not>
+                    <tableExists tableName="queue"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="queue">
+            <column name="queue_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="booking_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position_no" type="INT"/>
+            <column name="adjusted" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="scheduled_date" type="DATE"/>
+            <column name="scheduled_time" type="TIME"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="queue"
+                                 baseColumnNames="booking_id"
+                                 referencedTableName="booking"
+                                 referencedColumnNames="booking_id"
+                                 constraintName="fk_queue_booking"/>
+
+        <rollback>
+            <dropTable tableName="queue"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ✅ Create payment table -->
+    <changeSet id="GS_22082025-009-0009" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="booking"/>
+                <not>
+                    <tableExists tableName="payment"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="payment">
+            <column name="payment_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="booking_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL(10,2)"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="Pending"/>
+            <column name="mode" type="VARCHAR(20)" defaultValue="UPI"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="payment"
+                                 baseColumnNames="booking_id"
+                                 referencedTableName="booking"
+                                 referencedColumnNames="booking_id"
+                                 constraintName="fk_payment_booking"/>
+
+        <rollback>
+            <dropTable tableName="payment"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ✅ Create payment_settlement table -->
+    <changeSet id="GS_22082025-010-0010" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="payment"/>
+                <not>
+                    <tableExists tableName="payment_settlement"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="payment_settlement">
+            <column name="settlement_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="payment_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actual_paid_amount" type="DECIMAL(10,2)"/>
+            <column name="remarks" type="CLOB"/>
+            <column name="settlement_date" type="TIMESTAMP"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="payment_settlement"
+                                 baseColumnNames="payment_id"
+                                 referencedTableName="payment"
+                                 referencedColumnNames="payment_id"
+                                 constraintName="fk_settlement_payment"/>
+
+        <rollback>
+            <dropTable tableName="payment_settlement"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ✅ Create expenses table -->
+    <changeSet id="GS_22082025-011-0011" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="user"/>
+                <not>
+                    <tableExists tableName="expenses"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="expenses">
+            <column name="expense_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="owner_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="amount" type="DECIMAL(10,2)"/>
+            <column name="expense_date" type="TIMESTAMP"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="expenses"
+                                 baseColumnNames="owner_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_expense_owner"/>
+
+        <rollback>
+            <dropTable tableName="expenses"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ✅ Create notification table -->
+    <changeSet id="GS_22082025-012-0012" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="user"/>
+                <not>
+                    <tableExists tableName="notification"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="notification">
+            <column name="notification_id" type="BIGINT UNSIGNED" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="booking_id" type="BIGINT UNSIGNED"/>
+            <column name="type" type="VARCHAR(20)"/>
+            <column name="message" type="CLOB"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="Sent"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="notification"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_notification_user"/>
+
+        <addForeignKeyConstraint baseTableName="notification"
+                                 baseColumnNames="booking_id"
+                                 referencedTableName="booking"
+                                 referencedColumnNames="booking_id"
+                                 constraintName="fk_notification_booking"/>
+
+        <rollback>
+            <dropTable tableName="notification"/>
+        </rollback>
+    </changeSet>
 
 </databaseChangeLog>

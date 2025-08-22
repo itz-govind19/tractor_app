@@ -19,11 +19,11 @@
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="role"/>
             <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM role WHERE name = 'ADMIN'
+                SELECT COUNT(*) FROM role WHERE role_name = 'ADMIN'
             </sqlCheck>
         </preConditions>
         <insert tableName="role">
-            <column name="name" value="ADMIN"/>
+            <column name="role_name" value="ADMIN"/>
         </insert>
     </changeSet>
 
@@ -31,11 +31,11 @@
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="role"/>
             <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM role WHERE name = 'USER'
+                SELECT COUNT(*) FROM role WHERE role_name = 'USER'
             </sqlCheck>
         </preConditions>
         <insert tableName="role">
-            <column name="name" value="USER"/>
+            <column name="role_name" value="USER"/>
         </insert>
     </changeSet>
 

@@ -38,7 +38,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
      * @param roleName the name of the role to filter users by
      * @return a list of users having the specified role
      */
-    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleName = :roleName")
     List<User> findByRoleName(@Param("roleName") String roleName);
 
 }

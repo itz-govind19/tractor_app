@@ -93,7 +93,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getCurrentUser(authentication.getName());
         List<String> roleNames = user.getRoles().stream()
-                .map(role -> role.getName())
+                .map(role -> role.getRoleName())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(roleNames);
     }

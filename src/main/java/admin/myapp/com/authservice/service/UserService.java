@@ -76,7 +76,7 @@ public class UserService {
         user.setRoles(roles);
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setMobile(request.getMobile());
+        user.setPhone(request.getMobile());
         userRepository.save(user);
         return user;
     }
@@ -96,7 +96,7 @@ public class UserService {
         Optional<Role> first = roles.stream().findFirst();
         String role = null;
         if (first.isPresent()) {
-            role = first.get().getName();
+            role = first.get().getRoleName();
         } else {
             throw new InvalidUserException("Invalid User OR Role not found");
         }
@@ -214,7 +214,7 @@ public class UserService {
         existing.setName(updatedUser.getName());
         existing.setRoles(updatedUser.getRoles());
         existing.setEmail(updatedUser.getEmail());
-        existing.setMobile(updatedUser.getMobile());
+        existing.setPhone(updatedUser.getPhone());
         existing.setPassword(passwordEncoder.encode(existing.getPassword()));
         // Add checks if needed
         return userRepository.save(existing);
