@@ -8,4 +8,5 @@
 
     <include file="db/changelog/tables-changelog.xml"/>
     <include file="db/changelog/role-addition-changelog.xml"/>
+    <include file="db/changelog/user-addition-changelog.xml"/>
 </databaseChangeLog>

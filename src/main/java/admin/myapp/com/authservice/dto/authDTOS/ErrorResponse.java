@@ -1,4 +1,4 @@
-package admin.myapp.com.authservice.dto;
+package admin.myapp.com.authservice.dto.authDTOS;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

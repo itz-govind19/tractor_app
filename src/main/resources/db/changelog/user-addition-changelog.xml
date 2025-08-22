@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- This changelog creates the default ADMIN user and links the ADMIN role -->
+
+    <changeSet id="GS_22082025-001-0001" author="GOVIND SIRSATH">
+
+        <!-- 🔍 Check if 'admin' user already exists -->
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM user WHERE username = 'admin'
+            </sqlCheck>
+        </preConditions>
+
+        <!-- Insert admin user -->
+        <insert tableName="user">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="name" value="Admin User"/>
+            <column name="username" value="admin"/>
+            <column name="password" value="admin1234"/>
+            <column name="email" value="admin@example.com"/>
+            <column name="phone" value="9123456789"/>
+            <column name="is_guest" valueBoolean="false"/>
+            <column name="is_deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Link admin user to ADMIN role -->
+        <insert tableName="user_roles">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="role_id" valueNumeric="1"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,4 +1,4 @@
-package admin.myapp.com.authservice.service;
+package admin.myapp.com.authservice.service.auth;
 
 import admin.myapp.com.authservice.entity.User;
 import admin.myapp.com.authservice.repositoy.UserRepo;

@@ -1,12 +1,12 @@
-package admin.myapp.com.authservice.controller;
+package admin.myapp.com.authservice.controller.authController;
 
 import admin.myapp.com.authservice.annotations.*;
 import admin.myapp.com.authservice.constant.Constants;
-import admin.myapp.com.authservice.dto.AuthResponse;
-import admin.myapp.com.authservice.dto.LoginRequest;
-import admin.myapp.com.authservice.dto.RegisterRequest;
+import admin.myapp.com.authservice.dto.authDTOS.AuthResponse;
+import admin.myapp.com.authservice.dto.authDTOS.LoginRequest;
+import admin.myapp.com.authservice.dto.authDTOS.RegisterRequest;
 import admin.myapp.com.authservice.entity.User;
-import admin.myapp.com.authservice.service.UserService;
+import admin.myapp.com.authservice.service.auth.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -67,7 +67,7 @@ public class AuthController {
             }
 
             return new ResponseEntity<>(
-                    new admin.myapp.com.authservice.dto.ApiResponse(status.value(), message, LocalDateTime.now()),
+                    new admin.myapp.com.authservice.dto.authDTOS.ApiResponse(status.value(), message, LocalDateTime.now()),
                     status
             );
         }

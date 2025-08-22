@@ -1,11 +1,11 @@
-package admin.myapp.com.authservice.controller;
+package admin.myapp.com.authservice.controller.authController;
 
 import admin.myapp.com.authservice.annotations.BadRequestDoc;
 import admin.myapp.com.authservice.annotations.DuplicateUserDoc;
 import admin.myapp.com.authservice.annotations.NoUserFoundDoc;
 import admin.myapp.com.authservice.constant.Constants;
 import admin.myapp.com.authservice.entity.User;
-import admin.myapp.com.authservice.service.UserService;
+import admin.myapp.com.authservice.service.auth.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

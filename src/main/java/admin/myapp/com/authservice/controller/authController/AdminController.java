@@ -1,4 +1,4 @@
-package admin.myapp.com.authservice.controller;
+package admin.myapp.com.authservice.controller.authController;
 
 
 import admin.myapp.com.authservice.annotations.AdminForbiddenDoc;
@@ -6,7 +6,7 @@ import admin.myapp.com.authservice.annotations.NoUserFoundByIdDoc;
 import admin.myapp.com.authservice.annotations.NoUserFoundDoc;
 import admin.myapp.com.authservice.constant.Constants;
 import admin.myapp.com.authservice.entity.User;
-import admin.myapp.com.authservice.service.UserService;
+import admin.myapp.com.authservice.service.auth.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

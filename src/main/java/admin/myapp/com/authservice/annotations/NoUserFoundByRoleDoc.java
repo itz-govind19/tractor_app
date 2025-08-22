@@ -1,6 +1,6 @@
 package admin.myapp.com.authservice.annotations;
 
-import admin.myapp.com.authservice.dto.ErrorResponse;
+import admin.myapp.com.authservice.dto.authDTOS.ErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;

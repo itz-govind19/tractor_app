@@ -1,8 +1,8 @@
-package admin.myapp.com.authservice.service;
+package admin.myapp.com.authservice.service.auth;
 
 import admin.myapp.com.authservice.constant.Constants;
-import admin.myapp.com.authservice.dto.LoginRequest;
-import admin.myapp.com.authservice.dto.RegisterRequest;
+import admin.myapp.com.authservice.dto.authDTOS.LoginRequest;
+import admin.myapp.com.authservice.dto.authDTOS.RegisterRequest;
 import admin.myapp.com.authservice.entity.Role;
 import admin.myapp.com.authservice.entity.User;
 import admin.myapp.com.authservice.execeptions.*;

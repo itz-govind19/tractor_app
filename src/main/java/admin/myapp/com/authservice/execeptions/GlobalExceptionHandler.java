@@ -1,6 +1,6 @@
 package admin.myapp.com.authservice.execeptions;
 
-import admin.myapp.com.authservice.dto.ErrorResponse;
+import admin.myapp.com.authservice.dto.authDTOS.ErrorResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

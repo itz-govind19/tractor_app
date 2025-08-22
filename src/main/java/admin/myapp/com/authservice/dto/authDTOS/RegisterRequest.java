@@ -1,4 +1,4 @@
-package admin.myapp.com.authservice.dto;
+package admin.myapp.com.authservice.dto.authDTOS;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

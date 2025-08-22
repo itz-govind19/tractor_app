@@ -1,8 +1,7 @@
 package admin.myapp.com.authservice.security;
 
 import admin.myapp.com.authservice.constant.Constants;
-import admin.myapp.com.authservice.service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import admin.myapp.com.authservice.service.auth.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -63,6 +62,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                Constants.BASE_URL+"/**",
                                 Constants.BASE_URL + "/login",
                                 Constants.BASE_URL + "/register",
                                 Constants.BASE_URL + "/validate-token",
