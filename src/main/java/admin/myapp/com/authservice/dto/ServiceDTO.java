@@ -8,4 +8,5 @@ public class ServiceDTO {
     private String serviceName;
     private String description;
     private Long vehicleId;
+    private String vehicleName;
 }

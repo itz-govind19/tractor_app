@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
@@ -37,10 +38,16 @@ public class ServicesService {
     }
 
     public List<ServiceDTO> getAllServices() {
-        return servicesRepo.findByIsDeletedFalse()
+        List<ServiceDTO> collect = servicesRepo.findByIsDeletedFalse()
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+
+        for (ServiceDTO serviceDTO : collect) {
+            Optional<VehicleDetail> byId = vehicleDetailRepo.findById(serviceDTO.getVehicleId());
+            serviceDTO.setVehicleName(byId.get().getModel());
+        }
+        return collect;
     }
 
     public ServiceDTO getServiceById(Long id) {
