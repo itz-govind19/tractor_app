@@ -27,7 +27,7 @@ public class VehicleService {
         vehicle.setVehicleNumber(dto.getVehicleNumber());
         vehicle.setModel(dto.getModel());
 
-        Optional<User> userOpt = userRepository.findById(dto.getOwnerId());
+        Optional<User> userOpt = userRepository.findByUsername(dto.getUserName());
         userOpt.ifPresent(vehicle::setOwner);
 
         VehicleDetail saved = vehicalDetailRepo.save(vehicle);
@@ -58,8 +58,8 @@ public class VehicleService {
             vehicle.setVehicleNumber(dto.getVehicleNumber());
             vehicle.setModel(dto.getModel());
 
-            if (dto.getOwnerId() != null) {
-                userRepository.findById(dto.getOwnerId())
+            if (dto.getUserName() != null) {
+                userRepository.findByUsername(dto.getUserName())
                         .ifPresent(vehicle::setOwner);
             }
 
@@ -87,7 +87,7 @@ public class VehicleService {
         dto.setVehicleNumber(vehicle.getVehicleNumber());
         dto.setModel(vehicle.getModel());
         if (vehicle.getOwner() != null) {
-            dto.setOwnerId(vehicle.getOwner().getUserId());
+            dto.setUserName(vehicle.getOwner().getUsername());
         }
         return dto;
     }

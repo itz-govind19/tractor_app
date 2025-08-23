@@ -8,5 +8,5 @@ public class VehicleDTO {
     private String vehicleType;
     private String vehicleNumber;
     private String model;
-    private Long ownerId;
+    private String userName;
 }

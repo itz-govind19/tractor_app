@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
+import static admin.myapp.com.authservice.constant.Constants.BASE_URL_AUTH;
+
 /**
  * REST controller that handles authorization-related endpoints such as user registration,
  * login, and JWT token validation.
@@ -29,7 +31,7 @@ import java.time.LocalDateTime;
 @Tag(name = "Auth Controller", description = "Handles Authorization operations")
 @SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
-@RequestMapping(Constants.BASE_URL)
+@RequestMapping(Constants.BASE_URL+Constants.BASE_URL_AUTH)
 public class AuthController {
 
 

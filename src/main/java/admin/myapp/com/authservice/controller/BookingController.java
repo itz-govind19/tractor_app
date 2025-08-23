@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Constants.BASE_URL_RATE+Constants.BASE_URL_BOOKING)
+@RequestMapping(Constants.BASE_URL+Constants.BASE_URL_BOOKING)
 public class BookingController {
 
     @Autowired
