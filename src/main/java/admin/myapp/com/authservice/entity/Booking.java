@@ -1,11 +1,13 @@
 package admin.myapp.com.authservice.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "booking")
+@Data
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +33,24 @@ public class Booking {
     @JoinColumn(name = "vehicle_id")
     private VehicleDetail vehicle;
 
+    @Column(name = "acres")
+    private Double acres;  // Area in acres
+
+    @Column(name = "guntas")
+    private Double guntas; // Area in guntas (1 acre = 40 guntas)
+
+    @Column(name = "hours")
+    private Integer hours; // Time in hours
+
+    @Column(name = "minutes")
+    private Integer minutes; // Time in minutes
+
+    @Column(name = "kilometers")
+    private Double kilometers; // Distance in kilometers
+
     @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
+
+    @Column(name = "payment_time")
+    private LocalDateTime paymentTime;
 }

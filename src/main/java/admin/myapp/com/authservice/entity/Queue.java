@@ -1,11 +1,13 @@
 package admin.myapp.com.authservice.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "queue")
+@Data
 public class Queue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

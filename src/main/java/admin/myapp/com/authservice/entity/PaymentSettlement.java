@@ -1,12 +1,14 @@
 package admin.myapp.com.authservice.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payment_settlement")
+@Data
 public class PaymentSettlement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

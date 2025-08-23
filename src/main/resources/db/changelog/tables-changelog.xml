@@ -230,7 +230,7 @@
     </changeSet>
 
     <!-- ✅ Create booking table -->
-    <changeSet id="GS_22082025-007-0007" author="GOVIND SIRSATH">
+    <changeSet id="GS_23082025-007-0007" author="GOVIND SIRSATH">
         <preConditions onFail="MARK_RAN">
             <and>
                 <tableExists tableName="user"/>
@@ -246,6 +246,7 @@
             <column name="booking_id" type="BIGINT UNSIGNED" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
+
             <column name="farmer_id" type="BIGINT UNSIGNED"/>
             <column name="service_id" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
@@ -253,18 +254,30 @@
             <column name="vehicle_id" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+
             <column name="expected_date" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
+
             <column name="farmer_name" type="VARCHAR(100)"/>
             <column name="farmer_phone" type="VARCHAR(20)"/>
+
             <column name="status" type="VARCHAR(20)" defaultValue="Pending"/>
+
+            <!-- ✅ New Fields -->
+            <column name="acres" type="DOUBLE"/>
+            <column name="guntas" type="DOUBLE"/>
+            <column name="hours" type="INT"/>
+            <column name="minutes" type="INT"/>
+            <column name="kilometers" type="DOUBLE"/>
+            <column name="payment_time" type="TIMESTAMP"/>
+
             <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <!-- Add all foreign keys in the same changeset -->
+        <!-- Foreign Keys -->
         <addForeignKeyConstraint baseTableName="booking"
                                  baseColumnNames="farmer_id"
                                  referencedTableName="user"
@@ -287,6 +300,7 @@
             <dropTable tableName="booking"/>
         </rollback>
     </changeSet>
+
 
     <!-- ✅ Create queue table -->
     <changeSet id="GS_22082025-008-0008" author="GOVIND SIRSATH">
@@ -404,6 +418,7 @@
         <preConditions onFail="MARK_RAN">
             <and>
                 <tableExists tableName="user"/>
+                <tableExists tableName="vehicle_detail"/>
                 <not>
                     <tableExists tableName="expenses"/>
                 </not>
@@ -414,27 +429,47 @@
             <column name="expense_id" type="BIGINT UNSIGNED" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
+
             <column name="owner_id" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="vehicle_id" type="BIGINT UNSIGNED">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="description" type="VARCHAR(255)"/>
-            <column name="amount" type="DECIMAL(10,2)"/>
+
+            <column name="amount" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="expense_date" type="TIMESTAMP"/>
+
             <column name="is_deleted" type="BIT" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
+        <!-- Foreign key to owner -->
         <addForeignKeyConstraint baseTableName="expenses"
                                  baseColumnNames="owner_id"
                                  referencedTableName="user"
                                  referencedColumnNames="user_id"
                                  constraintName="fk_expense_owner"/>
 
+        <!-- ✅ Foreign key to vehicle -->
+        <addForeignKeyConstraint baseTableName="expenses"
+                                 baseColumnNames="vehicle_id"
+                                 referencedTableName="vehicle_detail"
+                                 referencedColumnNames="vehicle_id"
+                                 constraintName="fk_expense_vehicle"/>
+
         <rollback>
             <dropTable tableName="expenses"/>
         </rollback>
     </changeSet>
+
 
     <!-- ✅ Create notification table -->
     <changeSet id="GS_22082025-012-0012" author="GOVIND SIRSATH">

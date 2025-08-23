@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Constants.BASE_URL)
+@RequestMapping(Constants.BASE_URL+Constants.BASE_URL_VEHICLE)
 public class VehicleController {
 
     @Autowired
