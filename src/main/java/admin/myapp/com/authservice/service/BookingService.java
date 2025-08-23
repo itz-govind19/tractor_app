@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
@@ -49,6 +48,8 @@ public class BookingService {
         booking.setGuntas(dto.getGuntas());
         booking.setHours(dto.getHours());
         booking.setMinutes(dto.getMinutes());
+        booking.setKilometers(dto.getKilometers());
+        booking.setMeters(dto.getMeters());
         Booking save = bookingRepo.save(booking);
 
         Payment payment = new Payment();
@@ -101,6 +102,8 @@ public class BookingService {
         booking.setGuntas(dto.getGuntas());
         booking.setHours(dto.getHours());
         booking.setMinutes(dto.getMinutes());
+        booking.setKilometers(dto.getKilometers());
+        booking.setMeters(dto.getMeters());
 
         return convertToDTO(bookingRepo.save(booking));
     }
@@ -137,6 +140,8 @@ public class BookingService {
         dto.setGuntas(booking.getGuntas());
         dto.setHours(booking.getHours());
         dto.setMinutes(booking.getMinutes());
+        dto.setKilometers(booking.getKilometers());
+        dto.setMeters(booking.getMeters());
         return dto;
     }
 }

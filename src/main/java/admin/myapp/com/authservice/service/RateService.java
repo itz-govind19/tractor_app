@@ -42,6 +42,13 @@ public class RateService {
                 .collect(Collectors.toList());
     }
 
+    public List<RateDTO> getAllRatesByServieceId(Long id) {
+        return rateRepo.findByServiceServiceId(id)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public RateDTO getRateById(Long id) {
         RateTable rate = rateRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Rate not found"));

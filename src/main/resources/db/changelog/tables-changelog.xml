@@ -527,4 +527,16 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="GS_23082025-014-0014" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="booking" columnName="meters"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="booking">
+            <column name="meters" type="DOUBLE"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

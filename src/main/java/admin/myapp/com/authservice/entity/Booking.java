@@ -48,6 +48,9 @@ public class Booking {
     @Column(name = "kilometers")
     private Double kilometers; // Distance in kilometers
 
+    @Column(name = "meters")
+    private Double meters; // Distance in meters
+
     @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 

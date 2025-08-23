@@ -12,7 +12,7 @@ public class RateCalculator {
         BigDecimal totalAmount = BigDecimal.ZERO;
 
         for (RateTable rate : rateList) {
-            String unitType = rate.getUnitType();
+            String unitType = rate.getSubUnitType();
             BigDecimal rateAmount = rate.getRateAmount();
 
             switch (unitType.toUpperCase()) {
@@ -39,6 +39,11 @@ public class RateCalculator {
                 case "KM":
                     if (booking.getKilometers() != null) {
                         totalAmount = totalAmount.add(rateAmount.multiply(BigDecimal.valueOf(booking.getKilometers())));
+                    }
+                    break;
+                case "METER":
+                    if (booking.getMeters() != null) {
+                        totalAmount = totalAmount.add(rateAmount.multiply(BigDecimal.valueOf(booking.getMeters())));
                     }
                     break;
             }

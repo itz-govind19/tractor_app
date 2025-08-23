@@ -15,4 +15,6 @@ public class CreateBookingDTO {
     private Double guntas;
     private Integer hours;
     private Integer minutes;
+    private Double kilometers;
+    private Double meters;
 }
