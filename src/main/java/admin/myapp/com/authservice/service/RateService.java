@@ -28,6 +28,7 @@ public class RateService {
 
         RateTable rate = new RateTable();
         rate.setUnitType(dto.getUnitType());
+        rate.setSubUnitType(dto.getSubUnitType());
         rate.setRateAmount(dto.getRateAmount());
         rate.setService(service);
 
@@ -71,8 +72,10 @@ public class RateService {
         RateDTO dto = new RateDTO();
         dto.setRateId(rate.getRateId());
         dto.setUnitType(rate.getUnitType());
+        dto.setSubUnit(rate.getSubUnitType());
         dto.setRateAmount(rate.getRateAmount());
         dto.setServiceId(rate.getService().getServiceId());
+        dto.setServiceName(rate.getService().getServiceName());
         return dto;
     }
 }

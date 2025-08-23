@@ -24,6 +24,12 @@ public class ServicesController {
         return ResponseEntity.ok(created);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ServiceDTO> createService(@PathVariable Long id, @RequestBody ServiceDTO dto) {
+        ServiceDTO created = servicesService.updateService(id, dto);
+        return ResponseEntity.ok(created);
+    }
+
     // Get all active (non-deleted) services
     @GetMapping
     public ResponseEntity<List<ServiceDTO>> getAllServices() {

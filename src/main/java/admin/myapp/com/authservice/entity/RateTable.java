@@ -15,6 +15,7 @@ public class RateTable {
     private Long rateId;
 
     private String unitType;
+    private String subUnitType;
 
     private BigDecimal rateAmount;
 

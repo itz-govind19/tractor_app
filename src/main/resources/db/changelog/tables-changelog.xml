@@ -515,4 +515,16 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="GS_23082025-013-0013" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="rate_table" columnName="sub_unit_type"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="rate_table">
+            <column name="sub_unit_type" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

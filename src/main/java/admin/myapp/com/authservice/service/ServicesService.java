@@ -37,6 +37,22 @@ public class ServicesService {
         return convertToDTO(servicesRepo.save(service));
     }
 
+    public ServiceDTO updateService(Long id,ServiceDTO dto) {
+        VehicleDetail vehicle = vehicleDetailRepo.findById(dto.getVehicleId())
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+
+        Optional<Service> byServiceIdAndIsDeletedFalse = servicesRepo.findByServiceIdAndIsDeletedFalse(id);
+        if (byServiceIdAndIsDeletedFalse.isPresent()) {
+            Service service = byServiceIdAndIsDeletedFalse.get();
+            service.setServiceName(dto.getServiceName());
+            service.setDescription(dto.getDescription());
+            service.setVehicle(vehicle);
+            return convertToDTO(servicesRepo.save(service));
+        }else {
+            throw new EntityNotFoundException("Vehicle not found");
+        }
+    }
+
     public List<ServiceDTO> getAllServices() {
         List<ServiceDTO> collect = servicesRepo.findByIsDeletedFalse()
                 .stream()

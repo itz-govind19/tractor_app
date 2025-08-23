@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 public class RateDTO {
     private Long rateId;
     private String unitType;
+    private String subUnit;
     private BigDecimal rateAmount;
     private Long serviceId;
+    private String serviceName;
 }
