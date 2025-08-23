@@ -19,4 +19,5 @@ public class BookingDTO {
     private Integer minutes;
     private Double kilometers;
     private Double meters;
+    private String referenceId;
 }

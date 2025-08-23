@@ -539,4 +539,17 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="GS_23082025-015-0015" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="booking" columnName="reference_id"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="booking">
+            <column name="reference_id" type="VARCHAR(10)"/>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>

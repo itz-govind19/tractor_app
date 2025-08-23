@@ -56,4 +56,7 @@ public class Booking {
 
     @Column(name = "payment_time")
     private LocalDateTime paymentTime;
+
+    @Column(name = "reference_id")
+    private String referenceId;
 }

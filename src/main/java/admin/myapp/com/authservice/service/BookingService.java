@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
@@ -50,6 +51,9 @@ public class BookingService {
         booking.setMinutes(dto.getMinutes());
         booking.setKilometers(dto.getKilometers());
         booking.setMeters(dto.getMeters());
+
+        String s = generateReferenceNumber(dto);
+        booking.setReferenceId(s);
         Booking save = bookingRepo.save(booking);
 
         Payment payment = new Payment();
@@ -63,6 +67,38 @@ public class BookingService {
         paymentRepo.save(payment);
 
         return convertToDTO(save);
+    }
+
+    public static String generateReferenceNumber(CreateBookingDTO dto) {
+        String farmerPhone = dto.getFarmerPhone() != null ? dto.getFarmerPhone() : "0000";
+        String farmerName = dto.getFarmerName() != null ? dto.getFarmerName() : "NA";
+
+        // Extract last 4 digits of phone
+        String last4Phone = farmerPhone.length() >= 4
+                ? farmerPhone.substring(farmerPhone.length() - 4)
+                : farmerPhone;
+
+        // Get initials from farmer name
+        String[] parts = farmerName.trim().split("\\s+");
+        StringBuilder initials = new StringBuilder();
+        for (String part : parts) {
+            if (!part.isEmpty()) {
+                initials.append(Character.toUpperCase(part.charAt(0)));
+            }
+        }
+        if (initials.length() == 0) {
+            initials.append("NA");
+        }
+
+        // Timestamp + random for uniqueness (7 digits like your booking number)
+        long currentTimestamp = System.currentTimeMillis();
+        long bookingNumber = currentTimestamp % 1000000;
+        Random random = new Random();
+        int randomComponent = random.nextInt(10);
+        bookingNumber = bookingNumber * 10 + randomComponent;
+
+        // Final Reference Number
+        return String.format("REF-%s%s-%07d", initials, last4Phone, bookingNumber);
     }
 
     // Get all bookings
@@ -142,6 +178,7 @@ public class BookingService {
         dto.setMinutes(booking.getMinutes());
         dto.setKilometers(booking.getKilometers());
         dto.setMeters(booking.getMeters());
+        dto.setReferenceId(booking.getReferenceId());
         return dto;
     }
 }
