@@ -6,12 +6,15 @@ import admin.myapp.com.authservice.dto.authDTOS.AuthResponse;
 import admin.myapp.com.authservice.dto.authDTOS.LoginRequest;
 import admin.myapp.com.authservice.dto.authDTOS.RegisterRequest;
 import admin.myapp.com.authservice.entity.User;
+import admin.myapp.com.authservice.execeptions.InvalidUserException;
 import admin.myapp.com.authservice.service.auth.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static admin.myapp.com.authservice.constant.Constants.BASE_URL_AUTH;
 
@@ -31,7 +35,7 @@ import static admin.myapp.com.authservice.constant.Constants.BASE_URL_AUTH;
 @Tag(name = "Auth Controller", description = "Handles Authorization operations")
 @SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
-@RequestMapping(Constants.BASE_URL+Constants.BASE_URL_AUTH)
+@RequestMapping(Constants.BASE_URL + Constants.BASE_URL_AUTH)
 public class AuthController {
 
 
@@ -58,6 +62,16 @@ public class AuthController {
         try {
             User user = userService.register(request);
             return ResponseEntity.ok(user);
+        } catch (ConstraintViolationException e) {
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+
+            // Get the first violation's message, or a default fallback
+            String message = violations.stream()
+                    .reduce((first, second) -> second) // keeps the last element
+                    .map(ConstraintViolation::getMessage)
+                    .orElse("Validation failed");
+
+            throw new InvalidUserException(message);
         } catch (RuntimeException ex) {
             String message = ex.getMessage();
             HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -67,11 +81,7 @@ public class AuthController {
             } else if (message.startsWith("Role not found")) {
                 status = HttpStatus.NOT_FOUND;
             }
-
-            return new ResponseEntity<>(
-                    new admin.myapp.com.authservice.dto.authDTOS.ApiResponse(status.value(), message, LocalDateTime.now()),
-                    status
-            );
+            throw new InvalidUserException(message);
         }
     }
 

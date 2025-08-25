@@ -65,6 +65,7 @@ public class BookingService {
 
         payment.setAmount(totalAmmount);
         paymentRepo.save(payment);
+        save.setTotalAmount(totalAmmount);
 
         return convertToDTO(save);
     }
@@ -179,6 +180,7 @@ public class BookingService {
         dto.setKilometers(booking.getKilometers());
         dto.setMeters(booking.getMeters());
         dto.setReferenceId(booking.getReferenceId());
+        dto.setTotalAmount(booking.getTotalAmount());
         return dto;
     }
 }

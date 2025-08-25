@@ -26,7 +26,7 @@ public class ServicesService {
     private VehicalDetailRepo vehicleDetailRepo;
 
     public ServiceDTO createService(ServiceDTO dto) {
-        VehicleDetail vehicle = vehicleDetailRepo.findById(dto.getVehicleId())
+        VehicleDetail vehicle = vehicleDetailRepo.findByVehicleIdAndIsDeletedFalse(dto.getVehicleId())
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
 
         Service service = new Service();
@@ -38,7 +38,7 @@ public class ServicesService {
     }
 
     public ServiceDTO updateService(Long id,ServiceDTO dto) {
-        VehicleDetail vehicle = vehicleDetailRepo.findById(dto.getVehicleId())
+        VehicleDetail vehicle = vehicleDetailRepo.findByVehicleIdAndIsDeletedFalse(dto.getVehicleId())
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
 
         Optional<Service> byServiceIdAndIsDeletedFalse = servicesRepo.findByServiceIdAndIsDeletedFalse(id);

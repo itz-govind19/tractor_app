@@ -3,6 +3,7 @@ package admin.myapp.com.authservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -59,4 +60,7 @@ public class Booking {
 
     @Column(name = "reference_id")
     private String referenceId;
+
+    @Transient
+    private BigDecimal totalAmount;
 }

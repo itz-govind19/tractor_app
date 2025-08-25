@@ -547,9 +547,80 @@
         </preConditions>
 
         <addColumn tableName="booking">
-            <column name="reference_id" type="VARCHAR(10)"/>
+            <column name="reference_id" type="VARCHAR(20)"/>
         </addColumn>
     </changeSet>
+    <changeSet id="GS_25082025-016-0016" author="GOVIND SIRSATH">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="payment_settlement"/>
+        </preConditions>
+
+        <!-- Add receipt number for manual cash reference -->
+        <addColumn tableName="payment_settlement">
+            <column name="receipt_number" type="VARCHAR(100)"/>
+        </addColumn>
+
+        <!-- Installment and partial payment tracking -->
+        <addColumn tableName="payment_settlement">
+            <column name="installment_number" type="INT"/>
+            <column name="is_partial_payment" type="BIT" defaultValueBoolean="false"/>
+            <column name="payment_date" type="TIMESTAMP"/>
+            <column name="total_paid_so_far" type="DECIMAL(10,2)"/>
+        </addColumn>
+
+        <!-- Status and transaction type -->
+        <addColumn tableName="payment_settlement">
+            <column name="settlement_status" type="VARCHAR(30)"/>
+            <column name="transaction_type" type="VARCHAR(30)"/>
+        </addColumn>
+
+        <!-- Refund related fields -->
+        <addColumn tableName="payment_settlement">
+            <column name="refund_amount" type="DECIMAL(10,2)"/>
+            <column name="refund_date" type="TIMESTAMP"/>
+            <column name="refund_reason" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <!-- Extra financial fields -->
+        <addColumn tableName="payment_settlement">
+            <column name="extra_earned_amount" type="DECIMAL(10,2)" defaultValueNumeric="0.00"/>
+            <column name="remaining_amount" type="DECIMAL(10,2)"/>
+            <column name="mark_fully_paid" type="BIT" defaultValueBoolean="false"/>
+        </addColumn>
+
+        <!-- Collected and refunded by -->
+        <addColumn tableName="payment_settlement">
+            <column name="collected_by" type="VARCHAR(100)"/>
+            <column name="refunded_by" type="VARCHAR(100)"/>
+        </addColumn>
+
+        <!-- Audit fields -->
+        <addColumn tableName="payment_settlement">
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="payment_settlement" columnName="receipt_number"/>
+            <dropColumn tableName="payment_settlement" columnName="installment_number"/>
+            <dropColumn tableName="payment_settlement" columnName="is_partial_payment"/>
+            <dropColumn tableName="payment_settlement" columnName="payment_date"/>
+            <dropColumn tableName="payment_settlement" columnName="total_paid_so_far"/>
+            <dropColumn tableName="payment_settlement" columnName="settlement_status"/>
+            <dropColumn tableName="payment_settlement" columnName="transaction_type"/>
+            <dropColumn tableName="payment_settlement" columnName="refund_amount"/>
+            <dropColumn tableName="payment_settlement" columnName="refund_date"/>
+            <dropColumn tableName="payment_settlement" columnName="refund_reason"/>
+            <dropColumn tableName="payment_settlement" columnName="extra_earned_amount"/>
+            <dropColumn tableName="payment_settlement" columnName="remaining_amount"/>
+            <dropColumn tableName="payment_settlement" columnName="mark_fully_paid"/>
+            <dropColumn tableName="payment_settlement" columnName="collected_by"/>
+            <dropColumn tableName="payment_settlement" columnName="refunded_by"/>
+            <dropColumn tableName="payment_settlement" columnName="created_at"/>
+            <dropColumn tableName="payment_settlement" columnName="updated_at"/>
+        </rollback>
+    </changeSet>
+
 
 
 </databaseChangeLog>

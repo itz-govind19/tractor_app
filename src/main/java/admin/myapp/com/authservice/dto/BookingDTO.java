@@ -2,6 +2,7 @@ package admin.myapp.com.authservice.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,4 +21,5 @@ public class BookingDTO {
     private Double kilometers;
     private Double meters;
     private String referenceId;
+    private BigDecimal totalAmount;
 }
